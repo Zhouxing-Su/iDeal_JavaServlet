@@ -108,7 +108,76 @@ public class DatabaseManager {
 	 */
 	private static void initDatabase() {
 		DatabaseManager dm = create();
-		dm.update("CREATE TABLE user ( id INT PRIMARY KEY, email VARCHAR(64) UNIQUE );");
+
+		// create user table
+		dm.update(
+				"CREATE TABLE user ( "
+						+ "id INT PRIMARY KEY, "
+						+ "name VARCHAR(32)"
+						+ "email VARCHAR(32) UNIQUE, "
+						+ "password VARCHAR(32), "
+						+ "rank INT "
+						+ ");");
+		// create idea table
+		dm.update(
+				"CREATE TABLE idea ( "
+						+ "id INT PRIMARY KEY, "
+						+ "name VARCHAR(64), "
+						+ "requirment VARCHAR(1024), "
+						+ "example VARCHAR(1024), "
+						+ "keyword VARCHAR(64), "
+						+ "lastCommit DATETIME"
+						+ ");");
+		// create developer group table
+		dm.update(
+				"CREATE TABLE group ( "
+						+ "id INT PRIMARY KEY, "
+						+ "name VARCHAR(64), "
+						+ "repoURL VARCHAR(256), "
+						+ "qqGroup VARCHAR(16), "
+						+ "description VARCHAR(64), "
+						+ "foundTime DATETIME"
+						+ ");");
+		// create user concern idea table
+		dm.update(
+				"CREATE TABLE UserConcernIdea ( "
+						+ "userid INT, "
+						+ "ideaid INT ,"
+						+ "PRIMARY KEY (userid,ideaid)"
+						+ ");");
+		// create user write idea draft table
+		dm.update(
+				"CREATE TABLE IdeaDraft ( "
+						+ "userid INT, "
+						+ "ideaid INT ,"
+						+ "PRIMARY KEY (userid,ideaid)"
+						+ ");");
+		// create user write idea comment table
+		dm.update(
+				"CREATE TABLE IdeaComment ( "
+						+ "userid INT, "
+						+ "ideaid INT ,"
+						+ "comment VARCHAR(256),"
+						+ "PRIMARY KEY (userid,ideaid)"
+						+ ");");
+		// create user join group table
+		dm.update(
+				"CREATE TABLE UserJoinGroup ( "
+						+ "userid INT, "
+						+ "groupid INT ,"
+						+ "role VARCHAR(32), "
+						+ "PRIMARY KEY (userid,groupid)"
+						+ ");");
+		// create group implement idea table
+		dm.update(
+				"CREATE TABLE GroupImplementIdea ( "
+						+ "groupid INT ,"
+						+ "ideaid INT, "
+						+ "process VARCHAR(1024), "
+						+ "isFinished BOOLEAN,"
+						+ "PRIMARY KEY (groupid,ideaid)"
+						+ ");");
+
 		dm.close();
 	}
 

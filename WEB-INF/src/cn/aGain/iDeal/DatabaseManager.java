@@ -6,6 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Use create() to get this object and close() after finish.
+ * 
+ * @author Kirk
+ */
 public class DatabaseManager {
 	static final String driverName = "com.mysql.jdbc.Driver";
 	static final String dbName = "iDeal";
@@ -18,9 +23,9 @@ public class DatabaseManager {
 
 	static { // load the MySQL JDBC driver.
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName(driverName).newInstance();
 		} catch (Exception e) {
-			System.out.println("Error loading com.mysql.jdbc.Driver!");
+			System.err.println("Error loading " + driverName + " !");
 			e.printStackTrace();
 		}
 	}
@@ -39,8 +44,8 @@ public class DatabaseManager {
 		try {
 			this.statement.executeUpdate(updateStmt);
 		} catch (Exception e) {
-			System.out.println("Fail to exectue update \"" + updateStmt + "\" !");
-			e.printStackTrace();
+			System.err.println("Fail to exectue update \"" + updateStmt + "\" !");
+			//e.printStackTrace();
 		}
 	}
 
@@ -67,11 +72,11 @@ public class DatabaseManager {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/iDeal", "Kirk", "toy456852");
+			conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			stmt = conn.createStatement();
 		} catch (Exception e) {
-			System.out.println("Fail to connect jdbc:mysql://localhost:3306/iDeal!");
-			e.printStackTrace();
+			System.err.println("Fail to connect " + dbUrl + " !");
+			//e.printStackTrace();
 			return null;
 		}
 
@@ -88,7 +93,8 @@ public class DatabaseManager {
 			try {
 				this.statement.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.err.println("Fail to close DatabaseManager.stmt !");
+				//e.printStackTrace();
 			}
 			this.statement = null;
 		}
@@ -97,7 +103,8 @@ public class DatabaseManager {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println("Fail to close DatabaseManager.coonection !");
+				//e.printStackTrace();
 			}
 			this.connection = null;
 		}
